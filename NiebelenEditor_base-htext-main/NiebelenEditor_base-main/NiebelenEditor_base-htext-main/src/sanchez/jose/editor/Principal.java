@@ -2,12 +2,12 @@ package sanchez.jose.editor;
 
 import javax.swing.*;
 import javax.swing.text.DefaultEditorKit;
-import javax.swing.text.DefaultEditorKit.CopyAction;
-import javax.swing.text.DefaultEditorKit.CutAction;
 import javax.swing.undo.UndoManager;
 
 import java.awt.Color;
 import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.datatransfer.DataFlavor;
 import java.awt.BorderLayout;
 
 import java.awt.event.*;
@@ -75,9 +75,9 @@ class Panel extends JPanel{
 		creaItem("Deshacer", "editar", "deshacer");
 		creaItem("Rehacer", "editar", "rehacer");
 		editar.addSeparator();
-		creaItem("", "editar", "cortar");
-		creaItem("", "editar", "copiar");
-		creaItem("", "editar", "pegar");
+		creaItem("Cortar", "editar", "cortar");
+		creaItem("Copiar", "editar", "copiar");
+		creaItem("Pegar", "editar", "pegar");
 		//-------------------------------------------------------------
 		
 		//----------------- ELEMENTOS DEL MENU SELECCION ---------------
@@ -440,13 +440,51 @@ class Panel extends JPanel{
 			}
 			else if(accion.equals("cortar")) {
 				items[4]=elementoItem;
+				// Acción de cortar texto seleccionado
+				elementoItem.addActionListener(new DefaultEditorKit.CutAction());
+				// Comprueba si hay texto seleccionado y envía un mensaje de alerta si no existe
+				elementoItem.addActionListener(new ActionListener() {
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						int indexPane = tPane.getSelectedIndex(); // índice de la guía actual
+						String textoPane = listAreaTexto.get(indexPane).getSelectedText(); // texto de la guía actual
+						if(textoPane == null) JOptionPane.showMessageDialog (null, "Seleccione letra o texto para cortar!");
+					}
+				});
 			}
 			else if(accion.equals("copiar")) {
 				items[5] = elementoItem;
-				
+				// Acción de copiar texto seleccionado
+				elementoItem.addActionListener(new DefaultEditorKit.CopyAction());
+				// Comprueba si hay texto seleccionado y envía un mensaje de alerta si no existe
+				elementoItem.addActionListener(new ActionListener() {
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						int indexPane = tPane.getSelectedIndex(); // índice de la guía actual
+						String textoPane = listAreaTexto.get(indexPane).getSelectedText(); // texto de la guía actual
+						if(textoPane == null) JOptionPane.showMessageDialog (null, "Seleccione letra o texto para copiar!");
+					}
+				});
 			}
 			else if(accion.equals("pegar")) {
 				items[6] = elementoItem;
+				// Acción de pegar texto seleccionado
+				elementoItem.addActionListener(new DefaultEditorKit.PasteAction());
+				// Comprueba si hay texto seleccionado y envía un mensaje de alerta si no existe
+				elementoItem.addActionListener(new ActionListener() {
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						try {
+							String textoSeleccionado = Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor).toString();
+							if(textoSeleccionado == null) JOptionPane.showMessageDialog (null, "Seleccione letra o texto para pegar!");
+						} catch (Exception exception) {
+							exception.printStackTrace();
+						}
+					}
+				});
 				
 			}
 			
