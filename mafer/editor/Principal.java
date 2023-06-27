@@ -26,20 +26,21 @@ import javax.swing.JTextPane;
 import javax.swing.JToolBar;
 import javax.swing.text.DefaultEditorKit;
 import javax.swing.undo.UndoManager;
-
+import java.awt.Toolkit;
+import java.awt.datatransfer.DataFlavor;
 
 
 public class Principal {
 	public static void main(String[] args) {
 		JanelaBase janela = new JanelaBase();
-		janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // ao fechar, o programa é encerrado
+		janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // ao fechar, o programa ï¿½ encerrado
 		janela.setVisible(true);
 
 	}
 }
 
 class JanelaBase extends JFrame {
-	public JanelaBase() { // esse construtor da JanelaBase ja cria as dimensões, seta o nome e cria/agrega
+	public JanelaBase() { // esse construtor da JanelaBase ja cria as dimensï¿½es, seta o nome e cria/agrega
 							// o painel
 		setBounds(600, 600, 600, 600);
 		setTitle("Nibelen Editor");
@@ -49,11 +50,11 @@ class JanelaBase extends JFrame {
 
 class Painel extends JPanel {
 	
-	// ---------------- Os atributos da classe Painel são os componentes que serão
+	// ---------------- Os atributos da classe Painel sï¿½o os componentes que serï¿½o
 	// agregados a ele //----------------
 	private JPanel janela; // janela que abriga a area de texto base
 	private JTextPane areaDeTexto; // area de texto base
-	private JTabbedPane abaPanel; // aba do editor criadas no botão "novo"
+	private JTabbedPane abaPanel; // aba do editor criadas no botï¿½o "novo"
 	private JMenuBar menuExterno;
 	private JMenu archivo, editar, seleccion, ver, aparencia;
 	private JMenuItem itemDasopcoesDoMenu;
@@ -63,7 +64,7 @@ class Painel extends JPanel {
 	private ArrayList<JScrollPane> listaDeScroll;
 
 	// atributos
-	private int contadorPainel = 0; // vai contar quantos painés/aba foram criados
+	private int contadorPainel = 0; // vai contar quantos painï¿½s/aba foram criados
 	private boolean existePanel = false; // informa se ja existe algum painel criado
 	private String tipoFondo = "f";
 	private boolean numeracion = false;
@@ -79,7 +80,7 @@ class Painel extends JPanel {
 		this.menuExterno = new JMenuBar();
 		this.archivo = new JMenu("Archivo");
 		this.editar = new JMenu("Editar");
-		this.seleccion = new JMenu("Selección");
+		this.seleccion = new JMenu("Selecciï¿½n");
 		this.ver = new JMenu("Ver");
 		this.aparencia = new JMenu("Aparencia");
 		this.itemDasopcoesDoMenu = new JMenuItem();
@@ -109,9 +110,9 @@ class Painel extends JPanel {
 		criaItem("Copiar", "editar", "copiar");
 		criaItem("Pegar", "editar", "pegar");
 		// --------------------------- elementos do menu Seleccion
-		criaItem("Seleccionar todo", "selección", "selección");
+		criaItem("Seleccionar todo", "selecciï¿½n", "selecciï¿½n");
 		// --------------------------- elementos do menu Ver
-		criaItem("Numeración", "ver", "numeracion");
+		criaItem("Numeraciï¿½n", "ver", "numeracion");
 		ver.add(aparencia);
 		criaItem("Normal", "aparencia", "normal");
 		criaItem("Oscuro", "aparencia", "dark");
@@ -148,7 +149,7 @@ class Painel extends JPanel {
 					
 					contadorPainel--;
 					if(abaPanel.getSelectedIndex() == -1) {
-						existePanel = false; //se retorna -1 quer dizer que não ha panel criado
+						existePanel = false; //se retorna -1 quer dizer que nï¿½o ha panel criado
 					}
 				}
 				
@@ -210,7 +211,7 @@ class Painel extends JPanel {
 									FileReader entrada = new FileReader(
 											listaDeFiles.get(abaPanel.getSelectedIndex()).getPath());
 
-									BufferedReader miBuffer = new BufferedReader(entrada); //buffer armazena em memória para não ter que ir sempre ao artigo e ler
+									BufferedReader miBuffer = new BufferedReader(entrada); //buffer armazena em memï¿½ria para nï¿½o ter que ir sempre ao artigo e ler
 									String linea = "";
 									String titulo = listaDeFiles.get(abaPanel.getSelectedIndex()).getName();
 									abaPanel.setTitleAt(abaPanel.getSelectedIndex(), titulo); //o titulo se adiciona a aba do painel que se criou 
@@ -225,13 +226,13 @@ class Painel extends JPanel {
 										if(linea != null) Utilidades.append(linea + "\n", listaDeAreadeTexto.get(abaPanel.getSelectedIndex()));
 									}
 									Utilidades.aFondo(contadorPainel, tipoFondo, listaDeAreadeTexto);
-								} else { //se essa rota dos arquivos ja está aberta
-										//vamos varrer todas as abas abertas e ver qual tem o path do arquivo e selecioná-lo
+								} else { //se essa rota dos arquivos ja estï¿½ aberta
+										//vamos varrer todas as abas abertas e ver qual tem o path do arquivo e selecionï¿½-lo
 									for(int i=0; i<abaPanel.getTabCount(); i++) {
 										File f = selectorArchivo.getSelectedFile();
 										if(listaDeFiles.get(i).getPath().equals(f.getPath())) {
 											//seleciona o panel que tem o arquivo aberto
-											abaPanel.setSelectedIndex(i); //passamos como parâmetro a poição do panel que tem o path
+											abaPanel.setSelectedIndex(i); //passamos como parï¿½metro a poiï¿½ï¿½o do panel que tem o path
 											
 											listaDeAreadeTexto.remove(abaPanel.getTabCount() -1);
 											listaDeScroll.remove(abaPanel.getTabCount() -1);
@@ -263,7 +264,7 @@ class Painel extends JPanel {
 				});
 			}
 				
-			if (accion.equals("guardar")) { //salvar o arquivo se ele já existe
+			if (accion.equals("guardar")) { //salvar o arquivo se ele jï¿½ existe
 				itemDasopcoesDoMenu.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
@@ -402,17 +403,53 @@ class Painel extends JPanel {
 			});
 			}
 			else if(accion.equals("cortar")) {
-				itemDasopcoesDoMenu.addActionListener(new DefaultEditorKit.CutAction());			
+				// AcciÃ³n de copiar texto seleccionado
+				itemDasopcoesDoMenu.addActionListener(new DefaultEditorKit.CopyAction());
+				// Comprueba si hay texto seleccionado y envÃ­a un mensaje de alerta si no existe
+				itemDasopcoesDoMenu.addActionListener(new ActionListener() {
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						int indexPanel = abaPanel.getSelectedIndex(); // Ã­ndice de la guÃ­a actual
+						String textoPanel = listaDeAreadeTexto.get(indexPanel).getSelectedText(); // texto de la guÃ­a actual
+						if(textoPanel == null) JOptionPane.showMessageDialog (null, "Seleccione letra o texto para cortar!");
+					}
+				});			
 			}
 			else if(accion.equals("copiar")) {
+				// AcciÃ³n de copiar texto seleccionado
 				itemDasopcoesDoMenu.addActionListener(new DefaultEditorKit.CopyAction());
+				// Comprueba si hay texto seleccionado y envÃ­a un mensaje de alerta si no existe
+				itemDasopcoesDoMenu.addActionListener(new ActionListener() {
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						int indexPanel = abaPanel.getSelectedIndex(); // Ã­ndice de la guÃ­a actual
+						String textoPanel = listaDeAreadeTexto.get(indexPanel).getSelectedText(); // texto de la guÃ­a actual
+						if(textoPanel == null) JOptionPane.showMessageDialog (null, "Seleccione letra o texto para copiar!");
+					}
+				});
 			}
 			else if(accion.equals("pegar")) {
+				// AcciÃ³n de pegar texto seleccionado
 				itemDasopcoesDoMenu.addActionListener(new DefaultEditorKit.PasteAction());
+				// Comprueba si hay texto seleccionado y envÃ­a un mensaje de alerta si no existe
+				itemDasopcoesDoMenu.addActionListener(new ActionListener() {
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						try {
+							String textoSeleccionado = Toolkit.getDefaultToolkit().getSystemClipboard().getData(DataFlavor.stringFlavor).toString();
+							if(textoSeleccionado == null) JOptionPane.showMessageDialog (null, "Seleccione letra o texto para pegar!");
+						} catch (Exception exception) {
+							exception.printStackTrace();
+						}
+					}
+				});
 			}
 			
-		} else if (menu.equals("selección")) {
-			if(accion.equals("selección")) {
+		} else if (menu.equals("selecciï¿½n")) {
+			if(accion.equals("selecciï¿½n")) {
 				this.seleccion.add(itemDasopcoesDoMenu);
 				itemDasopcoesDoMenu.addActionListener(new ActionListener() {
 					@Override
@@ -480,11 +517,11 @@ class Painel extends JPanel {
 	                Autores: Alquimistas - Alura Latam
 	                - Adriana Oliveira
 	                - Brenda Souza
-	                - Eric Monné
+	                - Eric Monnï¿½
 	                - Luis Puig
 	                - Maria Fernada Ferreira
 	                
-	                Tecnologías usadas:
+	                Tecnologï¿½as usadas:
 	                Java 17 y Swing
 	                
 	                =]
@@ -495,8 +532,8 @@ class Painel extends JPanel {
 	 }
 	 public void showErrorDialog(){
 	        String message = """
-	                         ¡No hay fichero seleccionado!
-	                         Prueba la opción guardar como.    
+	                         ï¿½No hay fichero seleccionado!
+	                         Prueba la opciï¿½n guardar como.    
 	                         """;
 	            String title = "ERROR";
 	            JOptionPane.showMessageDialog(this, message, title,
@@ -511,7 +548,7 @@ class Painel extends JPanel {
 		listaDeFiles.add(new File(""));
 		listaDeAreadeTexto.add(new JTextPane());
 		listaDeScroll.add(new JScrollPane(listaDeAreadeTexto.get(contadorPainel)));
-		listadeManager.add(new UndoManager()); //servirá para rastrear os cambios hechos na Area de texto
+		listadeManager.add(new UndoManager()); //servirï¿½ para rastrear os cambios hechos na Area de texto
 		
 		listaDeAreadeTexto.get(contadorPainel).getDocument().addUndoableEditListener(listadeManager.get(contadorPainel));
 		this.areaDeTexto = new JTextPane();
