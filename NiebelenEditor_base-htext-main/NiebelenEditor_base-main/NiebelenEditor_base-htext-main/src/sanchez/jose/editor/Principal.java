@@ -446,8 +446,8 @@ class Painel extends JPanel {
 				});
 			}
 			
-		} else if (menu.equals("selecci�n")) {
-			if(accion.equals("selecci�n")) {
+		} else if (menu.equals("selección")) {
+			if(accion.equals("selección")) {
 				this.seleccion.add(itemDasopcoesDoMenu);
 				itemDasopcoesDoMenu.addActionListener(new ActionListener() {
 					@Override
@@ -530,8 +530,8 @@ class Painel extends JPanel {
 	 }
 	 public void showErrorDialog(){
 	        String message = """
-	                         �No hay fichero seleccionado!
-	                         Prueba la opci�n guardar como.    
+	                         ¡No hay fichero seleccionado!
+	                         Prueba la opción guardar como.    
 	                         """;
 	            String title = "ERROR";
 	            JOptionPane.showMessageDialog(this, message, title,
