@@ -30,16 +30,16 @@ import java.awt.datatransfer.DataFlavor;
 
 public class Principal {
 	public static void main(String[] args) {
-		JanelaBase janela = new JanelaBase();
-		janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // ao fechar, o programa � encerrado
-		janela.setVisible(true);
+		VentanaBase ventana = new VentanaBase();
+		ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // al cerrar, el programa se cierra
+		ventana.setVisible(true);
 
 	}
 }
 
-class JanelaBase extends JFrame {
-	public JanelaBase() { // esse construtor da JanelaBase ja cria as dimens�es, seta o nome e cria/agrega
-							// o painel
+class VentanaBase extends JFrame {
+	/* Ese constructor de VentanaBase ya crea las dimensiones, flecha el nombre y crea/agrega el panel  */
+	public VentanaBase() { 
 		setBounds(600, 600, 600, 600);
 		setTitle("Nibelen Editor");
 		add(new Painel());
@@ -48,22 +48,21 @@ class JanelaBase extends JFrame {
 
 class Painel extends JPanel {
 	
-	// ---------------- Os atributos da classe Painel s�o os componentes que ser�o
-	// agregados a ele //----------------
-	private JPanel janela; // janela que abriga a area de texto base
-	private JTextPane areaDeTexto; // area de texto base
-	private JTabbedPane abaPanel; // aba do editor criadas no bot�o "novo"
+	/* Los atributos de la clase Panel son los componentes que se agregarán a la misma */
+	private JPanel ventana; // ventana que alberga el área de texto base
+	private JTextPane areaDeTexto; // área de texto base
+	private JTabbedPane abaPanel; // pestaña del editor creado en el botón "nuevo"
 	private JMenuBar menuExterno;
 	private JMenu archivo, editar, seleccion, ver, aparencia;
-	private JMenuItem itemDasopcoesDoMenu;
+	private JMenuItem elementoDeLasOpcionesDelMenu; 
 	private ArrayList<JTextPane> listaDeAreadeTexto;
 	private ArrayList<UndoManager> listadeManager;
 	private ArrayList<File> listaDeFiles;
 	private ArrayList<JScrollPane> listaDeScroll;
 
 	// atributos
-	private int contadorPainel = 0; // vai contar quantos pain�s/aba foram criados
-	private boolean existePanel = false; // informa se ja existe algum painel criado
+	private int contadorPanel = 0; // contará cuántos paneles/pestañas se han creado
+	private boolean existePanel = false; // informa si ya existe algún panel creado
 	private String tipoFondo = "f";
 	private boolean numeracion = false;
 	private JToolBar herramienta;
@@ -73,7 +72,7 @@ class Painel extends JPanel {
 		setLayout(new BorderLayout());
 		
 		this.abaPanel = new JTabbedPane();
-		// ---------------- Menu //----------------
+		// ---------------- Menu ---------------- //
 		JPanel panelMenu = new JPanel();
 		this.menuExterno = new JMenuBar();
 		this.archivo = new JMenu("Archivo");
@@ -81,7 +80,7 @@ class Painel extends JPanel {
 		this.seleccion = new JMenu("Selección");
 		this.ver = new JMenu("Ver");
 		this.aparencia = new JMenu("Aparencia");
-		this.itemDasopcoesDoMenu = new JMenuItem();
+		this.elementoDeLasOpcionesDelMenu = new JMenuItem();
 
 		this.menuExterno.add(this.archivo);
 		this.menuExterno.add(this.editar);
@@ -92,7 +91,7 @@ class Painel extends JPanel {
 		add(panelMenu, BorderLayout.NORTH);
 		//panelMenu.setBackground(Color.GREEN);
 		
-		// --------------------------- elementos do menu Archivo
+		// --------------------------- elementos del menu Archivo
 		criaItem("Nuevo Archivo", "archivo", "nuevo");
 		criaItem("Abrir archivo", "archivo", "abrir");
 		criaItem("Guardar", "archivo", "guardar");
@@ -100,14 +99,14 @@ class Painel extends JPanel {
 		criaItem("Salir", "archivo", "salir");
 		archivo.addSeparator();
 		criaItem("Sobre el Nibelen", "archivo", "equipo");
-		// --------------------------- elementos do menu Editar
+		// --------------------------- elementos del menu Editar
 		criaItem("Deshacer", "editar", "deshacer");
 		criaItem("Rehacer", "editar", "rehacer");
 		editar.addSeparator();
 		criaItem("Cortar", "editar", "cortar");
 		criaItem("Copiar", "editar", "copiar");
 		criaItem("Pegar", "editar", "pegar");
-		// --------------------------- elementos do menu Seleccion
+		// --------------------------- elementos del menu Seleccion
 		criaItem("Seleccionar todo", "selección", "selección");
 		// --------------------------- elementos do menu Ver
 		criaItem("Numeración", "ver", "numeracion");
@@ -118,17 +117,14 @@ class Painel extends JPanel {
 		criaItem("Bosque", "aparencia", "forest");
 
 		panelMenu.add(this.menuExterno);
-		// ---------------- Depois de criado os objetos/componentes, agregar ao Painel
-		// //----------------
-
-		// ---------------- AREA DE TEXTO
+		/* Después de crear los objetos/componentes, agregar al Panel */
+		// ---------------- ÁREA DE TEXTO ---------------- //
 		abaPanel = new JTabbedPane();
 		listaDeFiles = new ArrayList<File>();
 		listaDeAreadeTexto = new ArrayList<JTextPane>();
 		listaDeScroll = new ArrayList<JScrollPane>();
 		listadeManager = new ArrayList<UndoManager>();
-		// ----------------
-		//-------------------- BARRA DE HERRAMIENTAS
+		// ---------------- BARRA DE HERRAMIENTAS ---------------- //
 		herramienta = new JToolBar(JToolBar.VERTICAL);
 		//herramienta = new JToolBar(JToolBar.HORIZONTAL);
 		url = Principal.class.getResource("../img/marca-x.png");
@@ -137,7 +133,7 @@ class Painel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int seleccion = abaPanel.getSelectedIndex();
-				if(seleccion != -1) { //se ha abas abertas, se fecha aqui
+				if(seleccion != -1) { // si hay pestañas abiertas, se cierra aquí
 					listaDeScroll.get(abaPanel.getSelectedIndex()).setRowHeader(null);
 					abaPanel.remove(seleccion);
 					listaDeAreadeTexto.remove(seleccion);
@@ -145,9 +141,9 @@ class Painel extends JPanel {
 					listadeManager.remove(seleccion);
 					listaDeFiles.remove(seleccion);
 					
-					contadorPainel--;
+					contadorPanel--;
 					if(abaPanel.getSelectedIndex() == -1) {
-						existePanel = false; //se retorna -1 quer dizer que n�o ha panel criado
+						existePanel = false; // si devuelve -1 significa que no ha panel creado
 					}
 				}
 				
@@ -159,7 +155,7 @@ class Painel extends JPanel {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				criaPainel();
+				creaPanel();
 				
 			}
 		});
@@ -170,33 +166,31 @@ class Painel extends JPanel {
 	}
 
 	public void criaItem(String rotulo, String menu, String accion) {
-		JMenuItem itemDasopcoesDoMenu = new JMenuItem(rotulo);
+		JMenuItem elementoDeLasOpcionesDelMenu = new JMenuItem(rotulo);
 		if (menu.equals("archivo")) {
-			this.archivo.add(itemDasopcoesDoMenu);
+			this.archivo.add(elementoDeLasOpcionesDelMenu);
 
 			if (accion.equals("nuevo")) {
-				itemDasopcoesDoMenu.addActionListener(new ActionListener() {
+				elementoDeLasOpcionesDelMenu.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						// System.out.println("hola linda");
-						criaPainel(); // cria abas
+						creaPanel(); // crea pestaña
 					}
 				});
 			} else if (accion.equals("abrir")) {
-				itemDasopcoesDoMenu.addActionListener(new ActionListener() {
+				elementoDeLasOpcionesDelMenu.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						criaPainel();
+						creaPanel();
 						JFileChooser selectorArchivo = new JFileChooser();
 						selectorArchivo.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
 						int resultado = selectorArchivo
 								.showOpenDialog(listaDeAreadeTexto.get(abaPanel.getSelectedIndex()));
-						System.out.println(resultado); // cancelar = 1; abrir arquivo = 0
+						System.out.println(resultado); // cancelar = 1; abrir archivo = 0
 
 						if (resultado == JFileChooser.APPROVE_OPTION) {
 							try {
 								boolean existePath = false;
-								// System.out.println(file.getPath());
 								for (int i = 0; i < abaPanel.getTabCount(); i++) {
 									File file = selectorArchivo.getSelectedFile();
 									if (listaDeFiles.get(i).getPath().equals(file.getPath()))
@@ -218,32 +212,30 @@ class Painel extends JPanel {
 										try {
 											linea = miBuffer.readLine();
 										} catch (IOException e1) {
-											// TODO Auto-generated catch block
 											e1.printStackTrace();
-										} //le linha a linha do arquivo
+										} // le línea la línea del archivo
 										if(linea != null) Utilidades.append(linea + "\n", listaDeAreadeTexto.get(abaPanel.getSelectedIndex()));
 									}
-									Utilidades.aFondo(contadorPainel, tipoFondo, listaDeAreadeTexto);
-								} else { //se essa rota dos arquivos ja est� aberta
-										//vamos varrer todas as abas abertas e ver qual tem o path do arquivo e selecion�-lo
+									Utilidades.aFondo(contadorPanel, tipoFondo, listaDeAreadeTexto);
+								} else { // si esa ruta de los archivos ya está abierta
+								// vamos a escanear todas las pestañas abiertas y ver cuál tiene la ruta del archivo y seleccionarlo
 									for(int i=0; i<abaPanel.getTabCount(); i++) {
 										File f = selectorArchivo.getSelectedFile();
 										if(listaDeFiles.get(i).getPath().equals(f.getPath())) {
-											//seleciona o panel que tem o arquivo aberto
-											abaPanel.setSelectedIndex(i); //passamos como par�metro a poi��o do panel que tem o path
+											// selecciona el panel que tiene el archivo abierto
+											abaPanel.setSelectedIndex(i); // le pasamos por parametro la posicion del panel que tiene el path
 											
 											listaDeAreadeTexto.remove(abaPanel.getTabCount() -1);
 											listaDeScroll.remove(abaPanel.getTabCount() -1);
 											listaDeFiles.remove(abaPanel.getTabCount() -1);
 											abaPanel.remove(abaPanel.getTabCount()-1);
-											contadorPainel--;
+											contadorPanel--;
 											break;
 										}
 									}
 								}
 								
 							} catch (FileNotFoundException e1) {
-								// TODO Auto-generated catch block
 								e1.printStackTrace();
 							}
 
@@ -254,7 +246,7 @@ class Painel extends JPanel {
 								listaDeScroll.remove(abaPanel.getTabCount() -1);
 								listaDeFiles.remove(abaPanel.getTabCount() -1);
 								abaPanel.remove(abaPanel.getTabCount()-1);
-								contadorPainel--;
+								contadorPanel--;
 							}
 						}
 						
@@ -262,8 +254,8 @@ class Painel extends JPanel {
 				});
 			}
 				
-			if (accion.equals("guardar")) { //salvar o arquivo se ele j� existe
-				itemDasopcoesDoMenu.addActionListener(new ActionListener() {
+			if (accion.equals("guardar")) { // guardar archivo si él ya existe
+				elementoDeLasOpcionesDelMenu.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						if(listaDeFiles.get(abaPanel.getSelectedIndex()).getPath().equals("")) {
@@ -285,7 +277,6 @@ class Painel extends JPanel {
 									
 									fw.close();
 								} catch (IOException e1) {
-									// TODO Auto-generated catch block
 									e1.printStackTrace();
 								}
 							}
@@ -301,7 +292,6 @@ class Painel extends JPanel {
 								
 								fw.close();
 							} catch (IOException e1) {
-								// TODO Auto-generated catch block
 								e1.printStackTrace();
 							}
 						}
@@ -309,7 +299,7 @@ class Painel extends JPanel {
 				});
 			}
 			if (accion.equals("guardarComo")) {
-				itemDasopcoesDoMenu.addActionListener(new ActionListener() {
+				elementoDeLasOpcionesDelMenu.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						JFileChooser guardarArchivo = new JFileChooser();
@@ -330,7 +320,6 @@ class Painel extends JPanel {
 								
 								fw.close();
 							} catch (IOException e1) {
-								// TODO Auto-generated catch block
 								e1.printStackTrace();
 							}
 						}
@@ -338,7 +327,7 @@ class Painel extends JPanel {
 				});
 			}
 			if (accion.equals("salir")) {
-				itemDasopcoesDoMenu.addActionListener(new java.awt.event.ActionListener() {
+				elementoDeLasOpcionesDelMenu.addActionListener(new java.awt.event.ActionListener() {
 		            public void actionPerformed(java.awt.event.ActionEvent evt) {
 		            	if(listaDeFiles.get(abaPanel.getSelectedIndex()).getPath().equals("")) {
 		            		showErrorDialog();
@@ -361,7 +350,6 @@ class Painel extends JPanel {
 									
 									fw.close();
 								} catch (IOException e1) {
-									// TODO Auto-generated catch block
 									e1.printStackTrace();
 								}
 							}
@@ -373,16 +361,16 @@ class Painel extends JPanel {
 		        });
 			}
 			if (accion.equals("equipo")) {
-				itemDasopcoesDoMenu.addActionListener(new java.awt.event.ActionListener() {
+				elementoDeLasOpcionesDelMenu.addActionListener(new java.awt.event.ActionListener() {
 		            public void actionPerformed(java.awt.event.ActionEvent evt) {
 		            	showAboutDialog();
 		            }
 		        });
 			}
 		} else if (menu.equals("editar")) {
-			this.editar.add(itemDasopcoesDoMenu);
+			this.editar.add(elementoDeLasOpcionesDelMenu);
 			if (accion.equals("deshacer")) {
-				itemDasopcoesDoMenu.addActionListener(new ActionListener() {
+				elementoDeLasOpcionesDelMenu.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						if(listadeManager.get(abaPanel.getSelectedIndex()).canUndo()) listadeManager.get(abaPanel.getSelectedIndex()).undo();
@@ -391,7 +379,7 @@ class Painel extends JPanel {
 			});
 		}
 			else if(accion.equals("rehacer")) {
-				itemDasopcoesDoMenu.addActionListener(new ActionListener() {
+				elementoDeLasOpcionesDelMenu.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						if(listadeManager.get(abaPanel.getSelectedIndex()).canRedo()) listadeManager.get(abaPanel.getSelectedIndex()).redo();
@@ -402,9 +390,9 @@ class Painel extends JPanel {
 			}
 			else if(accion.equals("cortar")) {
 				// Acción de copiar texto seleccionado
-				itemDasopcoesDoMenu.addActionListener(new DefaultEditorKit.CutAction());
+				elementoDeLasOpcionesDelMenu.addActionListener(new DefaultEditorKit.CutAction());
 				// Comprueba si hay texto seleccionado y envía un mensaje de alerta si no existe
-				itemDasopcoesDoMenu.addActionListener(new ActionListener() {
+				elementoDeLasOpcionesDelMenu.addActionListener(new ActionListener() {
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
@@ -416,9 +404,9 @@ class Painel extends JPanel {
 			}
 			else if(accion.equals("copiar")) {
 				// Acción de copiar texto seleccionado
-				itemDasopcoesDoMenu.addActionListener(new DefaultEditorKit.CopyAction());
+				elementoDeLasOpcionesDelMenu.addActionListener(new DefaultEditorKit.CopyAction());
 				// Comprueba si hay texto seleccionado y envía un mensaje de alerta si no existe
-				itemDasopcoesDoMenu.addActionListener(new ActionListener() {
+				elementoDeLasOpcionesDelMenu.addActionListener(new ActionListener() {
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
@@ -430,9 +418,9 @@ class Painel extends JPanel {
 			}
 			else if(accion.equals("pegar")) {
 				// Acción de pegar texto seleccionado
-				itemDasopcoesDoMenu.addActionListener(new DefaultEditorKit.PasteAction());
+				elementoDeLasOpcionesDelMenu.addActionListener(new DefaultEditorKit.PasteAction());
 				// Comprueba si hay texto seleccionado y envía un mensaje de alerta si no existe
-				itemDasopcoesDoMenu.addActionListener(new ActionListener() {
+				elementoDeLasOpcionesDelMenu.addActionListener(new ActionListener() {
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
@@ -448,8 +436,8 @@ class Painel extends JPanel {
 			
 		} else if (menu.equals("selección")) {
 			if(accion.equals("selección")) {
-				this.seleccion.add(itemDasopcoesDoMenu);
-				itemDasopcoesDoMenu.addActionListener(new ActionListener() {
+				this.seleccion.add(elementoDeLasOpcionesDelMenu);
+				elementoDeLasOpcionesDelMenu.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						listaDeAreadeTexto.get(abaPanel.getSelectedIndex()).selectAll();
@@ -457,53 +445,53 @@ class Painel extends JPanel {
 				});	
 			}
 		} else if (menu.equals("ver")) {
-			this.ver.add(itemDasopcoesDoMenu);
+			this.ver.add(elementoDeLasOpcionesDelMenu);
 			if(accion.equals("numeracion")) {
-				itemDasopcoesDoMenu.addActionListener(new ActionListener() {
+				elementoDeLasOpcionesDelMenu.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						numeracion = !numeracion;
-						Utilidades.viewNumeracion(contadorPainel, numeracion, listaDeAreadeTexto, listaDeScroll);
+						Utilidades.viewNumeracion(contadorPanel, numeracion, listaDeAreadeTexto, listaDeScroll);
 					}
 				});	
 			}
 			
 		} else if (menu.equals("aparencia")) {
-			this.aparencia.add(itemDasopcoesDoMenu);
+			this.aparencia.add(elementoDeLasOpcionesDelMenu);
 			
 			if(accion.equals("normal")) {
-				itemDasopcoesDoMenu.addActionListener(new ActionListener() {
+				elementoDeLasOpcionesDelMenu.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						tipoFondo = "w";
-						if(abaPanel.getTabCount() >0) Utilidades.aFondo(contadorPainel, tipoFondo, listaDeAreadeTexto);		
+						if(abaPanel.getTabCount() >0) Utilidades.aFondo(contadorPanel, tipoFondo, listaDeAreadeTexto);		
 					}	
 				});
 			}
 			else if(accion.equals("dark")) {
-				itemDasopcoesDoMenu.addActionListener(new ActionListener() {
+				elementoDeLasOpcionesDelMenu.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						tipoFondo = "d";
-						if(abaPanel.getTabCount() >0) Utilidades.aFondo(contadorPainel, tipoFondo, listaDeAreadeTexto);		
+						if(abaPanel.getTabCount() >0) Utilidades.aFondo(contadorPanel, tipoFondo, listaDeAreadeTexto);		
 					}	
 				});
 			}
 			else if(accion.equals("blue")) {
-				itemDasopcoesDoMenu.addActionListener(new ActionListener() {
+				elementoDeLasOpcionesDelMenu.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						tipoFondo = "b";
-						if(abaPanel.getTabCount() >0) Utilidades.aFondo(contadorPainel, tipoFondo, listaDeAreadeTexto);		
+						if(abaPanel.getTabCount() >0) Utilidades.aFondo(contadorPanel, tipoFondo, listaDeAreadeTexto);		
 					}	
 				});
 			}
 			else if(accion.equals("forest")) {
-				itemDasopcoesDoMenu.addActionListener(new ActionListener() {
+				elementoDeLasOpcionesDelMenu.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						tipoFondo = "f";
-						if(abaPanel.getTabCount() >0) Utilidades.aFondo(contadorPainel, tipoFondo, listaDeAreadeTexto);		
+						if(abaPanel.getTabCount() >0) Utilidades.aFondo(contadorPanel, tipoFondo, listaDeAreadeTexto);		
 					}	
 				});
 			}
@@ -537,28 +525,28 @@ class Painel extends JPanel {
 	            JOptionPane.showMessageDialog(this, message, title,
 	                    JOptionPane.ERROR_MESSAGE);
 	}
-	public void criaPainel() {
-		// ---------------- cria os objetos //----------------
-		this.janela = new JPanel();
-		janela.setLayout(new BorderLayout());
+	public void creaPanel() {
+		// ---------------- crea los objetos //----------------
+		this.ventana = new JPanel();
+		ventana.setLayout(new BorderLayout());
 		
 
 		listaDeFiles.add(new File(""));
 		listaDeAreadeTexto.add(new JTextPane());
-		listaDeScroll.add(new JScrollPane(listaDeAreadeTexto.get(contadorPainel)));
-		listadeManager.add(new UndoManager()); //servir� para rastrear os cambios hechos na Area de texto
+		listaDeScroll.add(new JScrollPane(listaDeAreadeTexto.get(contadorPanel)));
+		listadeManager.add(new UndoManager()); // servirá para rastrear los cambios realizados en el área de texto
 		
-		listaDeAreadeTexto.get(contadorPainel).getDocument().addUndoableEditListener(listadeManager.get(contadorPainel));
+		listaDeAreadeTexto.get(contadorPanel).getDocument().addUndoableEditListener(listadeManager.get(contadorPanel));
 		this.areaDeTexto = new JTextPane();
-		// ---------------- agregar os objetos //----------------
-		this.janela.add(listaDeScroll.get(contadorPainel), BorderLayout.CENTER);
-		this.abaPanel.addTab("title", this.janela);
-		Utilidades.viewNumerationInicio(numeracion, listaDeAreadeTexto.get(contadorPainel), listaDeScroll.get(contadorPainel));
+		// ---------------- agregar los objetos //----------------
+		this.ventana.add(listaDeScroll.get(contadorPanel), BorderLayout.CENTER);
+		this.abaPanel.addTab("title", this.ventana);
+		Utilidades.viewNumerationInicio(numeracion, listaDeAreadeTexto.get(contadorPanel), listaDeScroll.get(contadorPanel));
 
-		this.abaPanel.setSelectedIndex(contadorPainel);
+		this.abaPanel.setSelectedIndex(contadorPanel);
 		
-		contadorPainel++;
-		Utilidades.aFondo(contadorPainel, tipoFondo, listaDeAreadeTexto);
+		contadorPanel++;
+		Utilidades.aFondo(contadorPanel, tipoFondo, listaDeAreadeTexto);
 		existePanel = true;
 		
 	

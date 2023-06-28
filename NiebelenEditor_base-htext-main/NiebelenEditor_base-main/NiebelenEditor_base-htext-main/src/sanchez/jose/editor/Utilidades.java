@@ -18,7 +18,7 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
 
 public class Utilidades {
-	//------------------- adiciona texto ao final
+	//------------------- añade texto al final -------------------//
 	public static void append(String linea, JTextPane areaTexto) {
 		 try {
 			 Document doc = areaTexto.getDocument();
@@ -27,7 +27,7 @@ public class Utilidades {
 			 exc.printStackTrace();
 		 }
 	}
-	//-------------------  mostrar a numera��o da aba
+	//-------------------  mostrar la numeración de la pestaña -------------------//
 	public static void viewNumerationInicio(boolean numeracion, JTextPane textArea, JScrollPane scroll) {
 		if(numeracion) {
 			scroll.setRowHeaderView(new TextLineNumber(textArea));
@@ -47,7 +47,7 @@ public class Utilidades {
 			}
 		}
 	}
-	//------------------- aparencia
+	//------------------- apariencia -------------------//
 	public static void aFondo(int contador, String tipo, ArrayList<JTextPane> list ) {
 		if(tipo.equals("w")) {
 			for(int i=0; i<contador; i++) {
@@ -56,9 +56,9 @@ public class Utilidades {
 				
 				StyleContext sc = StyleContext.getDefaultStyleContext();
 				
-				//essa a��o define a cor do texto:
+				//esta acción define el color del texto:
 				AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, Color.BLACK);
-				//essa a��o define o estilo do texto:
+				//esta acción define el estilo del texto:
 				aset = sc.addAttribute(aset, StyleConstants.FontFamily, "Arial");
 				
 				list.get(i).setCharacterAttributes(aset, false);
@@ -70,9 +70,9 @@ public class Utilidades {
 				list.get(i).selectAll();
 				StyleContext sc = StyleContext.getDefaultStyleContext();
 				
-				//essa a��o define a cor do texto:
+				//esta acción define el color del texto:
 				AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, new Color(224, 224, 224));
-				//essa a��o define o estilo do texto:
+				//esta acción define el estilo del texto:
 				aset = sc.addAttribute(aset, StyleConstants.FontFamily, "Arial");
 				
 				list.get(i).setCharacterAttributes(aset, false);
@@ -85,9 +85,9 @@ public class Utilidades {
 				list.get(i).selectAll();
 				StyleContext sc = StyleContext.getDefaultStyleContext();
 				
-				//essa a��o define a cor do texto:
+				//esta acción define el color del texto:
 				AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, new Color(0, 0, 153));
-				//essa a��o define o estilo do texto:
+				//esta acción define el estilo del texto:
 				aset = sc.addAttribute(aset, StyleConstants.FontFamily, "Arial");
 				
 				list.get(i).setCharacterAttributes(aset, false);
@@ -100,9 +100,9 @@ public class Utilidades {
 				list.get(i).selectAll();
 				StyleContext sc = StyleContext.getDefaultStyleContext();
 				
-				//essa a��o define a cor do texto:
+				//esta acción define el color del texto:
 				AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, new Color(129, 32, 13));
-				//essa a��o define o estilo do texto:
+				//esta acción define el estilo del texto:
 				aset = sc.addAttribute(aset, StyleConstants.FontFamily, "Verdana");
 				
 				list.get(i).setCharacterAttributes(aset, false);
@@ -111,7 +111,7 @@ public class Utilidades {
 		}
 		
 	}
-	//------------------- bot�o
+	//------------------- botón -------------------//
 	public static JButton addButton(URL url, Object objContenedor, String rotulo) {
 		JButton button = new JButton(new ImageIcon(new ImageIcon(url).getImage().getScaledInstance(20,20, Image.SCALE_SMOOTH)));
 		button.setToolTipText(rotulo);
