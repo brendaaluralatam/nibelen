@@ -325,48 +325,54 @@ class Painel extends JPanel {
 						}
 					}
 				});
-			}
-			if (accion.equals("salir")) {
-				elementoDeLasOpcionesDelMenu.addActionListener(new java.awt.event.ActionListener() {
-		            public void actionPerformed(java.awt.event.ActionEvent evt) {
-		            	if(listaDeFiles.get(abaPanel.getSelectedIndex()).getPath().equals("")) {
-		            		showErrorDialog();
-		           
-		                	JFileChooser guardarArchivo = new JFileChooser();
-							int opc = guardarArchivo.showSaveDialog(null); 
+			} else if(accion.equals("salir")){	
+
+					elementoDeLasOpcionesDelMenu.addActionListener(new ActionListener() {
+
+					private JFileChooser selectorArchivos;
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						//si el archivo no se guardo
+						if(listaDeFiles.get(abaPanel.getSelectedIndex()).getPath().equals("")){
+							showErrorDialog();
+							JFileChooser salirGuardar = new JFileChooser();
+							salirGuardar.setDialogTitle("Elegir/crear un archivo para guardar antes de salir...");
+							
+						if(salirGuardar != null){
+							int opc = salirGuardar.showSaveDialog(salirGuardar);
 							
 							if(opc == JFileChooser.APPROVE_OPTION) {
-								File archivo = guardarArchivo.getSelectedFile();
+
+								File archivo = salirGuardar.getSelectedFile();
 								listaDeFiles.set(abaPanel.getSelectedIndex(), archivo);
 								abaPanel.setTitleAt(abaPanel.getSelectedIndex(), archivo.getName());
-								
+
 								try {
 									FileWriter fw = new FileWriter(listaDeFiles.get(abaPanel.getSelectedIndex()).getPath());
 									String texto = listaDeAreadeTexto.get(abaPanel.getSelectedIndex()).getText();
-									
-									for(int i =0; i<texto.length(); i++) {
+									for(int i=0; i<texto.length()-1; i++) {
 										fw.write(texto.charAt(i));
 									}
-									
 									fw.close();
-								} catch (IOException e1) {
-									e1.printStackTrace();
+								} catch(IOException e1){
+ 									e1.printStackTrace();									
 								}
-							}
-						}
-		            	else {
-		                    System.exit(0);   
-		            	}
-		            }
-		        });
+							} else {
+								JOptionPane.showMessageDialog(null, "Saliendo del programa...");
+								System.exit(0);
+							} 
+						} 
+						} 
+				}
+				});
 			}
-			if (accion.equals("equipo")) {
+		} else if (accion.equals("equipo")) {
 				elementoDeLasOpcionesDelMenu.addActionListener(new java.awt.event.ActionListener() {
 		            public void actionPerformed(java.awt.event.ActionEvent evt) {
 		            	showAboutDialog();
 		            }
 		        });
-			}
 		} else if (menu.equals("editar")) {
 			this.editar.add(elementoDeLasOpcionesDelMenu);
 			if (accion.equals("deshacer")) {
