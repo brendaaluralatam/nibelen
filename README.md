@@ -8,7 +8,7 @@ Nibelen es un editor de texto de escritorio desarrollado con el lenguaje de prog
 * Swing
     
 ## Proyecto base
-Para construir el proyecto del editor de texto, utilizamos como base el repositorio ["Editor de Texto con Java"](https://www.youtube.com/watch?v=pGVLnQZZU80&list=PL9k8nMt_92ougfc7zIb3liAoA79nJhso4&index=1&ab_channel=HumanTechnology). Todo el crédito va al autor del código base.
+Para construir el proyecto del editor de texto, utilizamos como base el repositorio ["Editor de Texto con Java"](https://www.youtube.com/watch?v=pGVLnQZZU80&list=PL9k8nMt_92ougfc7zIb3liAoA79nJhso4&index=1&ab_channel=HumanTechnology). Todo el crédito va al autor [José Sanchez](https://github.com/Human-Technology) del código base.
 
 ## Funcionalidades del proyecto
 * Crear archivo de texto
